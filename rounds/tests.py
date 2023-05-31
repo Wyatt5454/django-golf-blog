@@ -2,6 +2,7 @@ from django.utils import timezone
 import random
 from django.test import TestCase
 from .models import Player, Round, Hole
+from django.urls import reverse
 
 # Create your tests here.
 
@@ -61,3 +62,13 @@ class HoleModelTests(TestCase):
 
         hole = Hole.objects.create(round=round, number=1, fir=True, penalties=0, par=5, putts=4, score=6)
         self.assertTrue(hole.gir())
+
+class RoundIndexViewTests(TestCase):
+    def test_no_rounds(self):
+        """
+        If there's no rounds of golf, an appropriate message is displayed
+        """
+        response = self.client.get(reverse("rounds:index"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "No Rounds available")
+        self.assertQuerySetEqual(response.context["round_list"], [])
