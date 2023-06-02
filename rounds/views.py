@@ -15,6 +15,6 @@ class IndexView(generic.ListView):
         Return the last five published questions (not including those set to be
         published in the future).
         """
-        return Round.objects.filter(play_date__lte=timezone.now()).filter(hole__gt=0).distinct().order_by("-play_date")[
+        return Round.objects.filter(play_date__lte=timezone.now()).filter(holescore__gt=0).distinct().order_by("-play_date")[
         :5 
         ]

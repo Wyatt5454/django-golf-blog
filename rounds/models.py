@@ -1,31 +1,48 @@
 from django.db import models
 
-# Create your models here.
+# Course class.  Used as a  primary key for Tees and Holes.
+class Course(models.Model):
+    name = models.CharField(max_length=50)
 
+    def __str__(self) -> str:
+        return self.name
+
+class Hole(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    number = models.PositiveIntegerField()
+    par = models.PositiveIntegerField()
+
+# Player class.  Used as a primary key to find Rounds
 class Player(models.Model):
     name = models.CharField(max_length=30)
 
     def __str__(self) -> str:
         return self.name
 
+class Tee(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    name = models.CharField(max_length=20)
+    yardage = models.PositiveIntegerField()
+    slope = models.PositiveIntegerField()
+
+    def __str__(self) -> str:
+        return self.course.__str__() + " : " + self.name
+
 class Round(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    course = models.CharField(max_length=50)
+    tee_played = models.ForeignKey(Tee, on_delete=models.CASCADE)
     play_date = models.DateTimeField("date played")
     notes = models.CharField(max_length=500)
 
     def total_score(self):
-        holes = Hole.objects.filter(round=self)
+        holes = HoleScore.objects.filter(round=self)
         score = 0
         for hole in holes:
             score += hole.score
         return score
 
-
-class Hole(models.Model):
+class HoleScore(Hole):
     round = models.ForeignKey(Round, on_delete=models.CASCADE)
-    number = models.PositiveIntegerField()
-    par = models.PositiveIntegerField()
     score = models.PositiveIntegerField()
     fir = models.BooleanField()
     putts = models.PositiveIntegerField()
