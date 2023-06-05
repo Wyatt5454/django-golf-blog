@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
-from .models import Round, Course
+from .models import Round, Course, HoleDisplay
 
 # Create your views here.
 class IndexView(generic.ListView):
@@ -32,3 +32,11 @@ class CourseView(generic.DetailView):
     model = Course
     template_name = "rounds/course.html"
     context_object_name = "course"
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        """
+        Override to add courses to the context dictionary
+        """
+        context = super(CourseView, self).get_context_data(**kwargs)
+        context['holes'] = HoleDisplay.objects.filter(course=context['course']).order_by("-number")
+        return context
