@@ -41,13 +41,4 @@ class CourseView(generic.DetailView):
         context['holes'] = HoleDisplay.objects.filter(course=context['course']).order_by("-number")
         return context
     
-class APIView(generic.ListView):
-    
-    def rounds_api(request):
-        rounds = Round.objects.all()  # Fetch the rounds from your database
 
-        # Convert rounds to JSON format
-        rounds_data = [{'id': round.id, 'player': round.player.name, 'tee_played': round.tee_played.course.name,
-                        'play_date': round.play_date, 'notes': round.notes} for round in rounds]
-
-        return JsonResponse(rounds_data, safe=False)
