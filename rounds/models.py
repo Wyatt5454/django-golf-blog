@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 
-# Course class.  Used as a  primary key for Tees and Holes.
+# Course class.  Used as a  primary key for Tees and HoleDisplays.
 class Course(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=1000)
@@ -11,10 +11,6 @@ class Course(models.Model):
         return self.name
     def get_absolute_url(self):
         return reverse("course", kwargs={"slug": self.slug})
-
-class Hole(models.Model):
-    number = models.PositiveIntegerField()
-    par = models.PositiveIntegerField()
 
 # Player class.  Used as a primary key to find Rounds
 class Player(models.Model):
@@ -44,6 +40,10 @@ class Round(models.Model):
         for hole in holes:
             score += hole.score
         return score
+
+class Hole(models.Model):
+    number = models.PositiveIntegerField()
+    par = models.PositiveIntegerField()
 
 class HoleScore(Hole):
     round = models.ForeignKey(Round, on_delete=models.CASCADE)
