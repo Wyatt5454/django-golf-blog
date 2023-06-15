@@ -4,7 +4,8 @@ from django.views import generic
 from .models import HoleScore, Round
 
 def round_to_json(round):
-    return {'id': round.id, 'player': round.player.name, 'tee_played': round.tee_played.course.name,
+    return {'id': round.id, 'player': round.player.name, 'tee_played': round.tee_played.name,
+            'course': round.tee_played.course.name, 'score': round.total_score(),
             'play_date': round.play_date, 'notes': round.notes}
 
 def hole_to_json(holeScore):
@@ -14,7 +15,7 @@ def hole_to_json(holeScore):
 class APIView(generic.ListView):    
     
     def all_rounds(request):
-        rounds = Round.objects.all()  # Fetch the rounds from your database
+        rounds = Round.objects.all()  # Fetch the rounds from the database
 
         # Convert rounds to JSON format
         rounds_data = [ round_to_json(round) for round in rounds]
