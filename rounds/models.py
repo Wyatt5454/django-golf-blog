@@ -44,6 +44,7 @@ class Round(models.Model):
 class Hole(models.Model):
     number = models.PositiveIntegerField()
     par = models.PositiveIntegerField()
+    yardage = models.PositiveIntegerField()
 
 class HoleScore(Hole):
     round = models.ForeignKey(Round, on_delete=models.CASCADE)
@@ -60,4 +61,4 @@ class HoleScore(Hole):
     
 class HoleDisplay(Hole):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    yardage = models.PositiveIntegerField()
+    

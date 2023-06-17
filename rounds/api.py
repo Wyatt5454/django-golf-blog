@@ -9,7 +9,7 @@ def round_to_json(round):
             'play_date': round.play_date, 'notes': round.notes}
 
 def hole_to_json(holeScore):
-     return {'number': holeScore.number, 'par': holeScore.par, 'score': holeScore.score, 'fir':holeScore.fir,
+     return {'number': holeScore.number, 'par': holeScore.par, 'yardage': holeScore.yardage, 'score': holeScore.score, 'fir':holeScore.fir,
              'putts': holeScore.putts, 'penalties': holeScore.penalties}
 
 class APIView(generic.ListView):    
